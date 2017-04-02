@@ -1,5 +1,22 @@
 
 
+// others
+
+// No. 0-1: Effective : item 49
+/******************************************************/
+
+var scores = [98, 74, 85, 77, 93, 100, 89];
+var total = 0;
+for (var score in scores) {
+	total += score;
+}
+var mean = total / scores.length;
+console.log(mean); // ?
+
+
+
+
+
 // variable
 
 // No. 1
@@ -66,6 +83,12 @@ freud.call(dream);
 
 console.log(window.a);			// ?
 console.log(dream);				// ?
+
+
+
+
+
+
 
 // function
 
@@ -340,9 +363,23 @@ with ({id: 20}) {
 alert(id); // ?
 alert(ego); // ?
 
+// No. s-6: from YDTKJS: Scope&closures chp4
+/******************************************************/
 
+function freud() {
+  console.log(dream); // ?
+}
 
+function jung() {
+  var dream = 3;
+  freud();
+}
 
+var dream = 2;
+jung();
+
+// No. s-7:
+/******************************************************/
 
 
 
@@ -358,7 +395,7 @@ alert(ego); // ?
 
 // prototype
 
-// No. x-1
+// No. p-1
 /******************************************************/
 
 function Freud() {}
