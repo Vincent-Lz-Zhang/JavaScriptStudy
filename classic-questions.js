@@ -1,6 +1,10 @@
 
+// Count: 31
 
-// others
+/*--------------------------------------------*/
+/*--->               others               <---*/
+/*--------------------------------------------*/
+
 
 // No. 0-1: Effective : item 49
 /******************************************************/
@@ -16,8 +20,10 @@ console.log(mean); // ?
 
 
 
+/*--------------------------------------------*/
+/*--->              variable              <---*/
+/*--------------------------------------------*/
 
-// variable
 
 // No. 1
 /******************************************************/
@@ -95,8 +101,9 @@ console.log(dream);				// ?
 
 
 
-
-// this
+/*--------------------------------------------*/
+/*--->                this                <---*/
+/*--------------------------------------------*/
 
 
 // No. t-1: from DSLab chp3
@@ -174,114 +181,45 @@ with ({
   freud(); // ?
 }
 
-// No. t-7: from DSLab chp3
+// No. t-7: from YDTKJS: this&object prototypes chp6
 /******************************************************/
 
-var dream = 20;
-function freud(){
-    function jung1(){
-        console.log(this.dream);
-    }
-    with({
-        jung2: function(){
-            console.log(this.dream);
-        },
-        dream: 50
-    }){
-        function jung3(){
-            console.log(this.dream);
-        }
-        function jung4(){
-            console.log(dream);
-        }
-        jung1();	// ?
-        jung2();	// ?
-        jung3();	// ?
-        jung4();	// ?
-    }
-}
-freud();
+function Freud() {
+	this.dream = "sleep protector";
+    this.argue = function() { console.log(this.dream); }
+};
 
-// No. t-8: from DSLab chp3
+function Jung() {
+    this.dream = "compensation";
+}
+
+Jung.prototype = new Freud();
+
+var j = new Jung();
+j.argue();   // ?
+
+// No. t-8: from YDTKJS: this&object prototypes chp6
 /******************************************************/
 
-var freud;
-with ({dream: 50}) {
-  freud = function() {
-    console.log(dream);
-  };
-  function jung() {
-	console.log(dream);
-  }
-  freud(); // ?
-  jung(); // ?
-  lacan(); // ?
-}
-var dream = 20;
-function lacan() {
-	console.log(dream);
-}
-freud(); // ?
-jung(); // ????????????????????? isn't jung creation hoisted? why it is still keeping 50
-lacan(); // ?
+var freud = {
+	dream: "sleep protector",
+    argue: function() { console.log(this.dream); }
+};
 
-// No. t-9: from DSLab chp3
-/******************************************************/
+var jung = Object.create(freud);
+jung.dream = "compensation";
 
-Object.prototype.id = 10;
-
-var id = 20;
-var ego = 40;
-
-with ({superego:100}) {
-  var superego = 200;
-  Object.prototype.id = 30;
-  var id = 50;
-  var ego = 70;
-}
-
-console.log(id); // ?
-console.log(ego); // ?
-console.log(Object.prototype.id); // ?
-
-// No. t-10: from DSLab chp3
-/******************************************************/
-
-var id = 20;
-var freud = {ego: 100};
-
-with (freud) {
-  id = 50;
-}
-
-console.log(
-  id, // ?
-  freud // ?
-);
-
-// No. t-11: from DSLab chp3
-/******************************************************/
-
-Object.prototype.id = 10;
-var id = 20;
-var freud = {ego: 100};
-
-with (freud) {
-  id = 50;
-  var ego = 200;
-}
-
-console.log(
-  id, // ?
-  freud, // ?
-  Object.prototype.id // ?
-);
+jung.argue();   // ?
 
 
 
 
 
-// scope & closure
+
+
+/*--------------------------------------------*/
+/*--->          scope & closure           <---*/
+/*--------------------------------------------*/
 
 
 // No. s-1
@@ -378,14 +316,155 @@ function jung() {
 var dream = 2;
 jung();
 
-// No. s-7:
+// No. s-7:  from DSLab chp5
 /******************************************************/
 
+Object.prototype.x = 10;
 
+(function () {
+  console.log(x); // ?
+})();
 
+// No. s-8:  from DSLab chp5
+/******************************************************/
 
+Object.prototype.dream = 10;
 
+function freud() {
 
+  var dream = 20;
+
+  function jung() {
+    console.log(dream);
+  }
+
+  jung(); // ?
+
+  (function () {
+    console.log(dream); // ?
+  })();
+
+}
+
+freud();
+
+// No. s-9:  from DSLab chp6
+/******************************************************/
+
+var dreams = [];
+
+for (var k = 0; k < 3; k++) {
+  dreams[k] = function () {
+    console.log(k);
+  };
+}
+
+dreams[0](); // ?
+dreams[1](); // ?
+dreams[2](); // ?
+
+// No. s-10: from DSLab chp3
+/******************************************************/
+
+var dream = 20;
+function freud(){
+    function jung1(){
+        console.log(this.dream);
+    }
+    with({
+        jung2: function(){
+            console.log(this.dream);
+        },
+        dream: 50
+    }){
+        function jung3(){
+            console.log(this.dream);
+        }
+        function jung4(){
+            console.log(dream);
+        }
+        jung1();	// ?
+        jung2();	// ?
+        jung3();	// ?
+        jung4();	// ?
+    }
+}
+freud();
+
+// No. s-11: from DSLab chp3
+/******************************************************/
+
+var freud;
+with ({dream: 50}) {
+  freud = function() {
+    console.log(dream);
+  };
+  function jung() {
+	console.log(dream);
+  }
+  freud(); // ?
+  jung(); // ?
+  lacan(); // ?
+}
+var dream = 20;
+function lacan() {
+	console.log(dream);
+}
+freud(); // ?
+jung(); // ????????????????????? isn't jung creation hoisted? why it is still keeping 50
+lacan(); // ?
+
+// No. s-12: from DSLab chp3
+/******************************************************/
+
+Object.prototype.id = 10;
+
+var id = 20;
+var ego = 40;
+
+with ({superego:100}) {
+  var superego = 200;
+  Object.prototype.id = 30;
+  var id = 50;
+  var ego = 70;
+}
+
+console.log(id); // ?
+console.log(ego); // ?
+console.log(Object.prototype.id); // ?
+
+// No. s-13: from DSLab chp3
+/******************************************************/
+
+var id = 20;
+var freud = {ego: 100};
+
+with (freud) {
+  id = 50;
+}
+
+console.log(
+  id, // ?
+  freud // ?
+);
+
+// No. s-14: from DSLab chp3
+/******************************************************/
+
+Object.prototype.id = 10;
+var id = 20;
+var freud = {ego: 100};
+
+with (freud) {
+  id = 50;
+  var ego = 200;
+}
+
+console.log(
+  id, // ?
+  freud, // ?
+  Object.prototype.id // ?
+);
 
 //
 
@@ -393,9 +472,15 @@ jung();
 
 
 
-// prototype
 
-// No. p-1
+
+
+/*--------------------------------------------*/
+/*--->              prototype             <---*/
+/*--------------------------------------------*/
+
+
+// No. p-1:  from DSLab chp7-2
 /******************************************************/
 
 function Freud() {}
@@ -414,3 +499,72 @@ f.__proto__ = __proto;
 
 console.log(f instanceof Jung); // ?
 console.log(f instanceof Freud); // ?
+
+// No. p-2:  from DSLab chp7-2
+/******************************************************/
+
+function Freud() {}
+Freud.prototype.dream = 10;
+
+var f = new Freud();
+console.log(f.dream); // ?
+
+console.log(f instanceof Freud); // ?
+
+Freud.prototype = null;
+
+console.log(f.dream); // ?
+
+console.log(f instanceof Freud); // ?
+
+// No. p-3:  from DSLab chp7-2
+/******************************************************/
+
+function Freud() {}
+Freud.prototype.dream = 10;
+
+var f = new Freud();
+console.log(f.dream); // ?
+
+Freud = null;
+
+var j = new f.constructor();
+console.log(j.dream); // ?
+
+delete f.constructor.prototype.constructor;
+delete j.constructor.prototype.constructor;
+
+console.log(f.dream); // ?
+console.log(j.dream); // ?
+
+// No. p-4:  from DSLab chp7-2
+/******************************************************/
+
+function A() {}
+A.prototype.x = 10;
+
+var a = new A();
+console.log(a.x); // ?
+
+var __newPrototype = {
+	constructor: A,
+	x: 20,
+	y: 30
+};
+
+A.prototype = __newPrototype;
+
+var b = new A();
+console.log(b.x); // ?
+console.log(b.y); // ?
+
+console.log(a.x); // ?
+console.log(a.y); // ?
+
+a.__proto__ = __newPrototype;
+
+console.log(a.x); // ?
+console.log(a.y); // ?
+
+// No. p-5:  from DSLab chp7-2
+/******************************************************/
